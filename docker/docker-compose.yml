@@ -1,0 +1,22 @@
+version: '3.4'
+services:
+  nginx:
+    image: nginx:1.18-alpine
+    volumes:
+      - ./nginx/conf.d/app.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - php
+  php:
+    image: "${IMAGE_TAG}"
+    depends_on:
+      - db
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_PASSWORD: "docker"
+      LANG: 'pl_PL.UTF-8'
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+volumes:
+  db-data: {}
+  app-var: {}
